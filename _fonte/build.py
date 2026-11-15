@@ -17,6 +17,8 @@ js=re.search(r'<script type="text/x-dc"[^>]*>(.*?)</script>', s, re.S).group(1)
 js=js.replace('sel: "", copiado: false,','sel: (function(){ try { var c = new URLSearchParams(location.search).get("c"); return c && /^\\d{3}$/.test(c) ? c : ""; } catch (e) { return ""; } })(), copiado: false,',1)
 assert 'URLSearchParams' in js
 SITE='https://www.salveotricolorpaulista.com.br'
+GOATCOUNTER=os.environ.get('GOATCOUNTER','')  # código do site no GoatCounter, ex.: 'stp2026'
+GC_TAG=(f'<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>' if GOATCOUNTER else '')
 idx=f'''<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -32,6 +34,7 @@ idx=f'''<!doctype html>
 <meta property="og:url" content="{SITE}/">
 <link rel="icon" href="{nome['409e52b0f1732fe532d7f2b5d93b9605'] if '409e52b0f1732fe532d7f2b5d93b9605' in nome else ''}">
 <style>{css}</style>
+{GC_TAG}
 </head>
 <body>
 <div id="stp-raiz"></div>

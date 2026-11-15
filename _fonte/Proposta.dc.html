@@ -305,7 +305,7 @@ html{scroll-behavior:smooth}
 </button>
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px; background: #E50000">
 <span style="font-weight: 700; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; margin-right: auto">Compartilhe</span>
-<a class="stp-btn" href="{{c.waUrl}}" target="_blank" rel="noopener" aria-label="Compartilhar {{c.apelido}} no WhatsApp" title="WhatsApp" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg></a>
+<a class="stp-btn" href="{{c.waUrl}}" onClick="{{c.compartilhou}}" target="_blank" rel="noopener" aria-label="Compartilhar {{c.apelido}} no WhatsApp" title="WhatsApp" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg></a>
 <a class="stp-btn" href="{{c.fbUrl}}" target="_blank" rel="noopener" aria-label="Compartilhar {{c.apelido}} no Facebook" title="Facebook" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
 <sc-if value="{{c.temFoto}}" hint-placeholder-val="{{ true }}">
 <a class="stp-btn" href="{{c.sant}}" download="{{c.arquivo}}" aria-label="Baixar o santinho de {{c.apelido}} para postar no Instagram ou enviar" title="Baixar santinho (Instagram)" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></a>
@@ -392,7 +392,7 @@ html{scroll-behavior:smooth}
 <button type="button" onClick="{{limparCola}}" style="min-height: 48px; padding: 3px 14px 0; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 0; background: transparent; color: #888888">Limpar cola</button>
 <button class="stp-btn" type="button" onClick="{{baixarDaBarra}}" style="display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 3px 14px 0; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 2px solid #E50000; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>Baixe a imagem</button>
 <button class="stp-btn" type="button" onClick="{{abrirCola}}" style="min-height: 48px; padding: 3px 14px 0; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 2px solid #111111; background: #FFFFFF; color: #111111">Ver cola</button>
-<a class="stp-btn" href="{{colaWa}}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 3px 18px 0; background: #E50000; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>Enviar pelo WhatsApp</a>
+<a class="stp-btn" href="{{colaWa}}" onClick="{{enviouCola}}" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 3px 18px 0; background: #E50000; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>Enviar pelo WhatsApp</a>
 </div>
 </div>
 </sc-if>
@@ -420,7 +420,7 @@ html{scroll-behavior:smooth}
 </sc-for>
 </ul>
 <div style="padding: 6px 32px 0; display: flex; flex-wrap: wrap; gap: 8px">
-<a class="stp-btn" href="{{colaWa}}" target="_blank" rel="noopener" style="flex: 1 1 220px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 3px 16px 0; background: #E50000; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>Enviar pelo WhatsApp</a>
+<a class="stp-btn" href="{{colaWa}}" onClick="{{enviouCola}}" target="_blank" rel="noopener" style="flex: 1 1 220px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 3px 16px 0; background: #E50000; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>Enviar pelo WhatsApp</a>
 <button class="stp-btn" type="button" onClick="{{copiarCola}}" style="flex: 1 1 160px; min-height: 48px; padding: 3px 14px 0; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 2px solid #111111; background: #111111; color: #FFFFFF">{{colaCopiaLabel}}</button>
 <button class="stp-btn" type="button" onClick="{{baixarImagem}}" style="flex: 1 1 100%; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 3px 14px 0; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 2px solid #E50000; background: #FFFFFF; color: #E50000"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>{{imagemLabel}}</button>
 <sc-if value="{{temImgAviso}}" hint-placeholder-val="{{ false }}">
@@ -465,7 +465,7 @@ html{scroll-behavior:smooth}
 </sc-if>
 <span style="font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; color: #111111">Compartilhe este perfil</span>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
-<a class="stp-btn" href="{{sel.waUrl}}" target="_blank" rel="noopener" style="flex: 1 1 140px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 14px; background: #E50000; color: #FFFFFF; text-decoration: none; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>WhatsApp</a>
+<a class="stp-btn" href="{{sel.waUrl}}" onClick="{{sel.compartilhou}}" target="_blank" rel="noopener" style="flex: 1 1 140px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 14px; background: #E50000; color: #FFFFFF; text-decoration: none; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 8 19.3z"></path><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.6-2-1-1 .8a4.5 4.5 0 0 1-2.4-2.4l.8-1-1-2z"></path></svg>WhatsApp</a>
 <a class="stp-btn" href="{{sel.fbUrl}}" target="_blank" rel="noopener" style="flex: 1 1 140px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 14px; border: 2px solid #111111; background: #FFFFFF; color: #111111; text-decoration: none; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>Facebook</a>
 <button class="stp-btn" type="button" onClick="{{copiar}}" style="flex: 1 1 140px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 14px; border: 2px solid #111111; background: #111111; color: #FFFFFF; font-family: 'Gotham Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>{{copiaLabel}}</button>
 <sc-if value="{{sel.temQuad}}" hint-placeholder-val="{{ true }}">
@@ -679,6 +679,10 @@ var SITE = "https://www.salveotricolorpaulista.com.br";
 function msg(c){ return "Para o Conselho Deliberativo do SPFC, meu voto é " + c.apelido + ", número " + c.num + " — Chapa 01 São Paulo de Volta, com Marcelo Portugal Gouvêa presidente. Conheça o perfil: " + pagina(c); }
 function pagina(c){ return SITE + "/candidatos/" + c.num + "/"; }
 var MAX_COLA = 20;
+// Estatísticas (GoatCounter). Só registra quando o site está no domínio publicado.
+function rastrear(caminho, titulo){
+  try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: caminho, title: titulo || caminho, event: true }); } catch (e) {}
+}
 var COLA_KEY = "stp-cola-2026";
 function lerCola(){ try { var v = JSON.parse(window.localStorage.getItem(COLA_KEY) || "[]"); return Array.isArray(v) ? v.slice(0, MAX_COLA) : []; } catch (e) { return []; } }
 function carregaImg(src){
@@ -759,7 +763,7 @@ class Component extends DCLogic {
     function alternar(num){
       var atual = self.state.cola || [];
       if (atual.indexOf(num) >= 0) mudaCola(atual.filter(function(x){ return x !== num; }));
-      else if (atual.length < MAX_COLA) mudaCola(atual.concat([num]));
+      else if (atual.length < MAX_COLA) { mudaCola(atual.concat([num])); rastrear("cola-escolheu-" + num, "Pôs na cola: " + num); }
     }
     var lista = CANDIDATOS.filter(function(c){
       if (filtro === "conselheiros" && !c.cargo) return false;
@@ -768,7 +772,7 @@ class Component extends DCLogic {
     }).map(function(c0){ return monta(c0); });
     function monta(c0){
       var c = completa(c0);
-      return { num: c.num, apelido: c.apelido, nome: c.nome, sant: c.sant, temFoto: !!c.sant, semFoto: !c.sant, conselheiro: !!c.cargo, cargo: c.cargo || "", formacao: c.formacao, atuacao: c.atuacao, temFormacao: !!c.formacao, temAtuacao: !!c.atuacao, temCv: !!(c.formacao || c.atuacao || c.socio), pagina: pagina(c), quad: c.foto || "", temQuad: !!c.foto, semQuad: !c.foto, arquivoQuad: "santinho-quadrado-" + c.num + ".jpg", abrir: function(){ self.setState({ sel: c.num, copiado: false }); }, naCola: cola.indexOf(c.num) >= 0, podeAdd: cola.indexOf(c.num) < 0 && !cheia, bloqueado: cola.indexOf(c.num) < 0 && cheia, alternar: function(){ alternar(c.num); }, socio: c.socio, temSocio: !!c.socio, prof: c.prof || "", temProf: !!c.prof, papel: /^Sócia/.test(c.socio || "") ? "Candidata" : "Candidato", prior: c.prior.map(function(t, i){ return { n: i + 1, t: t }; }), temPrior: c.prior.length > 0, bio: c.bio, temBio: !!c.bio, semTexto: !(c.formacao || c.atuacao || c.bio || c.socio || c.prior.length), areas: c.areasList.map(function(a){ return { nome: a }; }), waUrl: "https://wa.me/?text=" + encodeURIComponent(msg(c)), fbUrl: "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(pagina(c)) + "&quote=" + encodeURIComponent(msg(c)), xUrl: "https://x.com/intent/post?text=" + encodeURIComponent(msg(c)), arquivo: "santinho-" + c.num + "-" + semAcento(c.apelido).replace(/[^a-z0-9]+/g, "-") + ".jpg", temAreas: c.areasList.length > 0 };
+      return { num: c.num, apelido: c.apelido, nome: c.nome, sant: c.sant, temFoto: !!c.sant, semFoto: !c.sant, conselheiro: !!c.cargo, cargo: c.cargo || "", formacao: c.formacao, atuacao: c.atuacao, temFormacao: !!c.formacao, temAtuacao: !!c.atuacao, temCv: !!(c.formacao || c.atuacao || c.socio), pagina: pagina(c), quad: c.foto || "", temQuad: !!c.foto, semQuad: !c.foto, arquivoQuad: "santinho-quadrado-" + c.num + ".jpg", compartilhou: function(){ rastrear("compartilhou-" + c.num, "Compartilhou no WhatsApp: " + c.num + " " + c.apelido); }, abrir: function(){ rastrear("perfil-" + c.num, "Abriu perfil: " + c.num + " " + c.apelido); self.setState({ sel: c.num, copiado: false }); }, naCola: cola.indexOf(c.num) >= 0, podeAdd: cola.indexOf(c.num) < 0 && !cheia, bloqueado: cola.indexOf(c.num) < 0 && cheia, alternar: function(){ alternar(c.num); }, socio: c.socio, temSocio: !!c.socio, prof: c.prof || "", temProf: !!c.prof, papel: /^Sócia/.test(c.socio || "") ? "Candidata" : "Candidato", prior: c.prior.map(function(t, i){ return { n: i + 1, t: t }; }), temPrior: c.prior.length > 0, bio: c.bio, temBio: !!c.bio, semTexto: !(c.formacao || c.atuacao || c.bio || c.socio || c.prior.length), areas: c.areasList.map(function(a){ return { nome: a }; }), waUrl: "https://wa.me/?text=" + encodeURIComponent(msg(c)), fbUrl: "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(pagina(c)) + "&quote=" + encodeURIComponent(msg(c)), xUrl: "https://x.com/intent/post?text=" + encodeURIComponent(msg(c)), arquivo: "santinho-" + c.num + "-" + semAcento(c.apelido).replace(/[^a-z0-9]+/g, "-") + ".jpg", temAreas: c.areasList.length > 0 };
     }
     var selC0 = CANDIDATOS.filter(function(c){ return c.num === self.state.sel; })[0];
     var sel = selC0 ? monta(selC0) : null;
@@ -783,6 +787,12 @@ class Component extends DCLogic {
     var n = lista.length;
     var colaLista = CANDIDATOS.filter(function(c){ return cola.indexOf(c.num) >= 0; }).sort(function(a, b){ return Number(a.num) - Number(b.num); });
     var colaTexto = textoCola(colaLista);
+    function colaFeita(como){
+      rastrear("cola-criada", "Cola criada (todas as formas)");
+      rastrear("cola-" + como, "Cola enviada: " + como);
+      rastrear("cola-tamanho-" + colaLista.length, "Cola com " + colaLista.length + " nomes");
+      colaLista.forEach(function(c){ rastrear("cola-enviada-" + c.num, "Na cola enviada: " + c.num + " " + c.apelido); });
+    }
     return {
       lista: lista,
       temSel: !!sel,
@@ -810,6 +820,7 @@ class Component extends DCLogic {
         var gerada;
         try { gerada = gerarImagemCola(colaLista); } catch (e) { gerada = Promise.reject(e); }
         gerada.then(function(r){
+          colaFeita("imagem");
           self.setState({ colaImg: r.url, imgAviso: "Se o download não começar, toque e segure na imagem (ou clique com o botão direito) para salvar." });
           if (!r.blob) { self.setState({ gerando: false }); return; }
           return salvarArquivo(r.blob, "minha-cola-stp-2026.png").then(function(){ self.setState({ gerando: false }); }, function(){ self.setState({ gerando: false }); });
@@ -821,7 +832,8 @@ class Component extends DCLogic {
       abrirCola: function(){ self.setState({ colaAberta: true, colaCopiada: false }); },
       fecharCola: function(){ self.setState({ colaAberta: false }); },
       limparCola: function(){ gravarCola([]); self.setState({ cola: [], colaAberta: false, colaCopiada: false }); },
-      copiarCola: function(){ try { navigator.clipboard.writeText(colaTexto).then(function(){ self.setState({ colaCopiada: true }); }, function(){}); } catch (e) {} },
+      enviouCola: function(){ colaFeita("whatsapp"); },
+      copiarCola: function(){ colaFeita("copiou-texto"); try { navigator.clipboard.writeText(colaTexto).then(function(){ self.setState({ colaCopiada: true }); }, function(){}); } catch (e) {} },
       totalLabel: String(CANDIDATOS.length),
       vazio: n === 0,
       countLabel: n === 1 ? "1 candidato" : n + " candidatos",
