@@ -58,10 +58,9 @@ for linha in re.findall(r'\{num:"\d{3}",[^\n]*', s):
     cand='Candidata' if fem else 'Candidato'
     t=f'{n} · {ap} — {cand} ao Conselho Deliberativo do SPFC'
     d=(prof.group(1)+' · '+prof.group(2)) if prof else f'{cand} do Salve o Tricolor Paulista.'
-    url=f'{SITE}/candidatos/{n}/'; img=f'{SITE}/{foto}' if foto else ''
+    url=f'{SITE}/candidatos/{n}.html'; img=f'{SITE}/{foto}' if foto else ''
     E=lambda x: html.escape(x,quote=True)
-    os.makedirs(f'{OUT}/candidatos/{n}')
-    open(f'{OUT}/candidatos/{n}/index.html','w',encoding='utf-8').write(f'''<!doctype html>
+    open(f'{OUT}/candidatos/{n}.html','w',encoding='utf-8').write(f'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{E(t)} | Salve o Tricolor Paulista</title>
@@ -72,7 +71,7 @@ for linha in re.findall(r'\{num:"\d{3}",[^\n]*', s):
 <meta property="og:title" content="{E(t)}"><meta property="og:description" content="{E(d)}">
 <meta property="og:url" content="{url}">
 {f'<meta property="og:image" content="{img}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{img}">' if img else ''}
-<meta http-equiv="refresh" content="0; url=../../?c={n}#candidatos">
-<script>location.replace("../../?c={n}#cand-{n}");</script>
-</head><body><p><a href="../../?c={n}">Ver o perfil de {E(ap)}</a></p></body></html>''')
+<meta http-equiv="refresh" content="0; url=../?c={n}#candidatos">
+<script>location.replace("../?c={n}#cand-{n}");</script>
+</head><body><p><a href="../?c={n}">Ver o perfil de {E(ap)}</a></p></body></html>''')
 print('ok', len(nome), 'assets', len(os.listdir(f'{OUT}/candidatos')),'perfis')
