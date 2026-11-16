@@ -48,6 +48,8 @@ html{scroll-behavior:smooth}
 .stp-lid-seta{appearance:none;width:44px;height:44px;border:2px solid #111111;background:#FFFFFF;color:#111111;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,color .2s}
 .stp-lid-seta:hover{background:#111111;color:#FFFFFF}
 @media (max-width: 820px){.stp-lid{grid-template-columns:1fr}.stp-lid-tabs{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid #DDDDDD;scrollbar-width:none}.stp-lid-tabs::-webkit-scrollbar{display:none}.stp-lid-tab{flex:none;white-space:nowrap;border-left:0;border-bottom:4px solid transparent;padding:14px 14px 10px;font-size:16px}.stp-lid-on{border-bottom-color:#E50000}.stp-lid-body{flex-direction:column}.stp-lid-foto{width:100%;aspect-ratio:4/5}.stp-lid-panel{padding:22px 20px}}
+.stp-topo{animation:stp-topo-in .25s ease-out both}.stp-topo:hover{background:#3A3A3A!important}@keyframes stp-topo-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width: 820px){.stp-topo{width:46px!important;height:46px!important;right:14px!important}}
 .stp-lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
 .stp-lift:hover{transform:translateY(-8px) rotate(0deg)!important;box-shadow:0 18px 40px rgba(0,0,0,.22)}
 .stp-t1{transform:rotate(-3deg)}.stp-t2{transform:rotate(2deg)}.stp-t3{transform:rotate(-1.5deg)}.stp-t4{transform:rotate(3deg)}
@@ -376,8 +378,15 @@ html{scroll-behavior:smooth}
 
 
 <!-- Barra da cola -->
+<!-- Voltar ao topo -->
+<sc-if value="{{topoSolto}}" hint-placeholder-val="{{ false }}">
+<button class="stp-btn stp-topo" type="button" onClick="{{irTopo}}" aria-label="Voltar ao topo" title="Voltar ao topo" style="position: fixed; right: 20px; bottom: 20px; z-index: 41; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border: 0; background: #111111; color: #FFFFFF; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.25)"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button>
+</sc-if>
 <sc-if value="{{temCola}}" hint-placeholder-val="{{ false }}">
 <div role="region" aria-label="Sua cola" style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: #FFFFFF; border-top: 4px solid #E50000; box-shadow: 0 -8px 24px rgba(0,0,0,.12)">
+<sc-if value="{{topoNaBarra}}" hint-placeholder-val="{{ false }}">
+<button class="stp-btn stp-topo" type="button" onClick="{{irTopo}}" aria-label="Voltar ao topo" title="Voltar ao topo" style="position: absolute; right: 20px; bottom: calc(100% + 16px); z-index: 41; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border: 0; background: #111111; color: #FFFFFF; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.25)"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button>
+</sc-if>
 <div style="max-width: 1360px; margin: 0 auto; padding: 12px var(--g); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px">
 <div style="display: flex; align-items: baseline; gap: 10px; margin-right: auto">
 <span style="font-weight: 700; font-size: 15px; letter-spacing: 0.18em; color: #E50000">SUA COLA</span>
@@ -753,7 +762,7 @@ var LIDERES = [
   { cargo: "CONSELHEIRO VITALÍCIO", nome: "Carlos Caboclo", curto: "Carlos Caboclo", foto: "/_blob/cf8199a0caf18ef4b6f7d81d7210b254", texto: "Colaborador do clube desde 1967, foi diretor de futebol nos anos 1970 e 1980 e ocupou cargos na base, na comunicação e no marketing. Foi quem trouxe Telê Santana de volta ao São Paulo, em 1990." }
 ];
 class Component extends DCLogic {
-  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: "", copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "", lid: 0 }; }
+  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: "", copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "", lid: 0, longe: false }; var self = this; try { window.addEventListener("scroll", function(){ var l = (window.scrollY || window.pageYOffset || 0) > 700; if (l !== !!self.state.longe) self.setState({ longe: l }); }, { passive: true }); } catch (e) {} }
   renderVals() {
     var self = this;
     var q = semAcento(this.state.q).trim();
@@ -810,6 +819,9 @@ class Component extends DCLogic {
       liderProx: function(){ self.setState({ lid: ((self.state.lid || 0) + 1) % LIDERES.length }); mostraAba(); },
       faces: faces,
       temCola: cola.length > 0 && !sel && !this.state.colaAberta,
+      topoSolto: !!this.state.longe && cola.length === 0 && !sel && !this.state.colaAberta,
+      topoNaBarra: !!this.state.longe && cola.length > 0 && !sel && !this.state.colaAberta,
+      irTopo: function(){ try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); } },
       colaN: String(cola.length),
       colaResumo: colaLista.map(function(c){ return c.num; }).join(" · "),
       colaLista: colaLista.map(function(c){ return { num: c.num, apelido: c.apelido, tirar: function(){ alternar(c.num); } }; }),
