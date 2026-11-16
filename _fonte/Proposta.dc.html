@@ -39,6 +39,15 @@ html{scroll-behavior:smooth}
 .stp-rise-2{animation:stp-rise .9s .15s cubic-bezier(.2,.7,.2,1) both}
 .stp-rise-3{animation:stp-rise .9s .3s cubic-bezier(.2,.7,.2,1) both}
 .stp-slash{animation:stp-slide 1s cubic-bezier(.2,.7,.2,1) both}
+.stp-lid{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:0;border:1px solid #DDDDDD}
+.stp-lid-tabs{display:flex;flex-direction:column;border-right:1px solid #DDDDDD}
+.stp-lid-tab{appearance:none;background:#FFFFFF;border:0;border-bottom:1px solid #EEEEEE;border-left:4px solid transparent;padding:14px 18px 11px;text-align:left;font-family:'Gotham Condensed',sans-serif;font-weight:700;font-size:17px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#888888;cursor:pointer;transition:color .2s,background .2s}
+.stp-lid-tab:hover{color:#111111;background:#F6F6F6}
+.stp-lid-on{color:#111111;border-left-color:#E50000;background:#F6F6F6}
+.stp-lid-body{display:flex;min-width:0}.stp-lid-foto{flex:none;width:240px;aspect-ratio:4/5;background:#AAABAE;display:flex;align-items:center;justify-content:center;overflow:hidden}.stp-lid-panel{flex:1;min-width:0;padding:28px 32px;display:flex;flex-direction:column;gap:12px}
+.stp-lid-seta{appearance:none;width:44px;height:44px;border:2px solid #111111;background:#FFFFFF;color:#111111;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,color .2s}
+.stp-lid-seta:hover{background:#111111;color:#FFFFFF}
+@media (max-width: 820px){.stp-lid{grid-template-columns:1fr}.stp-lid-tabs{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid #DDDDDD;scrollbar-width:none}.stp-lid-tabs::-webkit-scrollbar{display:none}.stp-lid-tab{flex:none;white-space:nowrap;border-left:0;border-bottom:4px solid transparent;padding:14px 14px 10px;font-size:16px}.stp-lid-on{border-bottom-color:#E50000}.stp-lid-body{flex-direction:column}.stp-lid-foto{width:100%;aspect-ratio:auto;height:300px}.stp-lid-foto img{object-position:center 20%}.stp-lid-panel{padding:22px 20px}}
 .stp-lift{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s}
 .stp-lift:hover{transform:translateY(-8px) rotate(0deg)!important;box-shadow:0 18px 40px rgba(0,0,0,.22)}
 .stp-t1{transform:rotate(-3deg)}.stp-t2{transform:rotate(2deg)}.stp-t3{transform:rotate(-1.5deg)}.stp-t4{transform:rotate(3deg)}
@@ -203,42 +212,29 @@ html{scroll-behavior:smooth}
 <p style="margin: 0; font-size: 16px; line-height: 1.45; color: #333333">Advogado formado pela PUC-SP, com especializações pela FGV em estratégia processual e negociação. Conselheiro do São Paulo desde 2008 e vitalício desde 2014, integrou a comissão que investigou o contrato com a Far East, em 2015, e a que redigiu o novo Estatuto Social, em 2016. Liderança do Salve o Tricolor Paulista, fez oposição à gestão Casares e foi um dos autores do pedido de destituição. Fora do clube, foi diretor de handebol do EC Pinheiros e fundou a Abrahand e a Liga Jurídica de Escritórios de Advocacia, que presidiu. Filho do ex-presidente Marcelo Figueiredo Portugal Gouvêa (2002–2006), lidera a chapa São Paulo de Volta.</p>
 </div>
 </article>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px 24px">
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">EX-PRESIDENTE DO CONSELHO</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">José Carlos Ferreira Alves</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Desembargador. Foi presidente do Conselho Deliberativo, vice-presidente do clube, secretário da diretoria e diretor de futebol, além de integrar o departamento jurídico em gestões anteriores.</p>
+<div class="stp-lid">
+<div class="stp-lid-tabs" role="tablist" aria-label="Lideranças">
+<sc-for list="{{lideres}}" as="l" hint-placeholder-count="7">
+<sc-if value="{{l.ativo}}"><button type="button" role="tab" aria-selected="true" onClick="{{l.ver}}" class="stp-lid-tab stp-lid-on">{{l.nome}}</button></sc-if>
+<sc-if value="{{l.inativo}}"><button type="button" role="tab" aria-selected="false" onClick="{{l.ver}}" class="stp-lid-tab">{{l.nome}}</button></sc-if>
+</sc-for>
+</div>
+<div class="stp-lid-body">
+<div class="stp-lid-foto">
+<sc-if value="{{lider.temFoto}}"><img src="{{lider.foto}}" alt="{{lider.nome}}" style="width: 100%; height: 100%; object-fit: cover; display: block"></sc-if>
+<sc-if value="{{lider.semFoto}}"><span style="font-weight: 700; font-size: 64px; letter-spacing: 0.04em; color: #FFFFFF">{{lider.iniciais}}</span></sc-if>
+</div>
+<article role="tabpanel" aria-live="polite" class="stp-lid-panel">
+<span style="font-weight: 700; font-size: 12px; letter-spacing: 0.16em; color: #E50000">{{lider.cargo}}</span>
+<h3 style="margin: 0; font-weight: 700; font-size: clamp(26px, 2.6vw, 34px); line-height: 1; text-transform: uppercase">{{lider.nome}}</h3>
+<p style="margin: 0; font-size: 17px; line-height: 1.45; color: #333333">{{lider.texto}}</p>
+<div style="margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 10px">
+<button type="button" onClick="{{liderAnt}}" aria-label="Liderança anterior" class="stp-lid-seta">&#8592;</button>
+<button type="button" onClick="{{liderProx}}" aria-label="Próxima liderança" class="stp-lid-seta">&#8594;</button>
+<span style="font-weight: 700; font-size: 14px; letter-spacing: 0.1em; color: #888888">{{lider.pos}}</span>
+</div>
 </article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">EX-PRESIDENTE DO CLUBE</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">Fernando Casal de Rey</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Ex-presidente do São Paulo (1994–1998). Diretor de futebol no bicampeonato da Libertadores e do Mundial (1992 e 1993), está no clube desde 1972 e é conselheiro desde 1974.</p>
-</article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">EX-VICE DE FUTEBOL</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">José Alexandre Médicis da Silveira</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Foi vice-presidente de futebol do clube e, antes disso, dirigiu o futebol de base (2014–2015).</p>
-</article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">DIRIGENTE DO FUTEBOL</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">Marco Aurélio Cunha</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Médico e ex-vereador de São Paulo. Dirigente do futebol são-paulino em diferentes gestões, coordenou por cinco anos as seleções femininas da CBF.</p>
-</article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">CONSELHEIRO</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">Kalef João Francisco</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Conselheiro do clube e diretor de futebol do São Paulo nos anos 1990, na era dos campeões do mundo.</p>
-</article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">EX-VICE-PRESIDENTE GERAL</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">Roberto Rhormens Alves Natel</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Conselheiro e sobrinho de Laudo Natel. Foi vice-presidente geral do clube nas gestões de Juvenal Juvêncio e de Carlos Augusto de Barros e Silva, e candidato à presidência em 2020.</p>
-</article>
-<article style="border-top: 2px solid #111111; padding-top: 10px; display: flex; flex-direction: column; gap: 6px">
-<span style="font-weight: 700; font-size: 11px; letter-spacing: 0.16em; color: #E50000">CONSELHEIRO VITALÍCIO</span>
-<h3 style="margin: 0; font-weight: 700; font-size: 20px; line-height: 1.05; text-transform: uppercase">Carlos Caboclo</h3>
-<p style="margin: 0; font-size: 15px; line-height: 1.4; color: #555555">Colaborador do clube desde 1967, foi diretor de futebol nos anos 1970 e 1980 e ocupou cargos na base, na comunicação e no marketing. Foi quem trouxe Telê Santana de volta ao São Paulo, em 1990.</p>
-</article>
+</div>
 </div>
 </div>
 </div>
@@ -751,8 +747,18 @@ function textoCola(lista){
     lista.map(function(c){ return c.num + " · " + c.apelido.toUpperCase(); }).join("\n") +
     "\n\nMonte a sua: " + SITE + "/#candidatos";
 }
+function mostraAba(){ setTimeout(function(){ try { var t = document.querySelector(".stp-lid-on"), box = t && t.parentNode; if (box && box.scrollWidth > box.clientWidth) box.scrollTo({ left: t.offsetLeft - 20, behavior: "smooth" }); } catch (e) {} }, 30); }
+var LIDERES = [
+  { cargo: "EX-PRESIDENTE DO CONSELHO", nome: "José Carlos Ferreira Alves", curto: "Ferreira Alves", texto: "Desembargador. Foi presidente do Conselho Deliberativo, vice-presidente do clube, secretário da diretoria e diretor de futebol, além de integrar o departamento jurídico em gestões anteriores." },
+  { cargo: "EX-PRESIDENTE DO CLUBE", nome: "Fernando Casal de Rey", curto: "Casal de Rey", foto: "/_blob/8e6118546c1d215b9928221afecfb746", texto: "Ex-presidente do São Paulo (1994–1998). Diretor de futebol no bicampeonato da Libertadores e do Mundial (1992 e 1993), está no clube desde 1972 e é conselheiro desde 1974." },
+  { cargo: "EX-VICE DE FUTEBOL", nome: "José Alexandre Médicis da Silveira", curto: "Médicis", foto: "/_blob/16ff2b33ef5f0cc241910c109a293100", texto: "Foi vice-presidente de futebol do clube e, antes disso, dirigiu o futebol de base (2014–2015). Um dos principais líderes e porta-vozes do movimento que conseguiu o impeachment de Julio Casares." },
+  { cargo: "DIRIGENTE DO FUTEBOL", nome: "Marco Aurélio Cunha", curto: "Marco Aurélio", foto: "/_blob/688bd086ebbaa76743788f26b40cff12", texto: "Médico e ex-vereador de São Paulo. Dirigente do futebol são-paulino em diferentes gestões, coordenou por cinco anos as seleções femininas da CBF." },
+  { cargo: "CONSELHEIRO", nome: "Kalef João Francisco", curto: "Kalef", foto: "/_blob/9f7ec4cddca27505606a5c28056f47a0", texto: "Conselheiro do clube e diretor de futebol do São Paulo nos anos 1990, na era dos campeões do mundo." },
+  { cargo: "EX-VICE-PRESIDENTE GERAL", nome: "Roberto Rhormens Alves Natel", curto: "Roberto Natel", foto: "/_blob/69d48c24083b5f4ba36264355fe8f6a0", texto: "Conselheiro e sobrinho de Laudo Natel. Foi vice-presidente geral do clube nas gestões de Juvenal Juvêncio e de Carlos Augusto de Barros e Silva, e candidato à presidência em 2020." },
+  { cargo: "CONSELHEIRO VITALÍCIO", nome: "Carlos Caboclo", curto: "Carlos Caboclo", foto: "/_blob/b7d3c74821453092389e69e296e5e5c3", texto: "Colaborador do clube desde 1967, foi diretor de futebol nos anos 1970 e 1980 e ocupou cargos na base, na comunicação e no marketing. Foi quem trouxe Telê Santana de volta ao São Paulo, em 1990." }
+];
 class Component extends DCLogic {
-  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: "", copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "" }; }
+  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: "", copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "", lid: 0 }; }
   renderVals() {
     var self = this;
     var q = semAcento(this.state.q).trim();
@@ -803,6 +809,10 @@ class Component extends DCLogic {
         var url = sel ? sel.pagina : SITE;
         try { navigator.clipboard.writeText(url).then(function(){ self.setState({ copiado: true }); }, function(){ self.setState({ copiado: false }); }); } catch (e) {}
       },
+      lideres: LIDERES.map(function(l, i){ var on = i === (self.state.lid || 0); return { nome: l.curto, ativo: on, inativo: !on, ver: function(){ self.setState({ lid: i }); } }; }),
+      lider: (function(){ var i = self.state.lid || 0, l = LIDERES[i]; return { cargo: l.cargo, nome: l.nome, texto: l.texto, foto: l.foto || "", temFoto: !!l.foto, semFoto: !l.foto, iniciais: l.curto.split(" ").filter(function(w){ return /^[A-ZÁÉÍÓÚ]/.test(w); }).map(function(w){ return w[0]; }).join("").slice(0, 2), pos: (i + 1) + " / " + LIDERES.length }; })(),
+      liderAnt: function(){ self.setState({ lid: ((self.state.lid || 0) + LIDERES.length - 1) % LIDERES.length }); mostraAba(); },
+      liderProx: function(){ self.setState({ lid: ((self.state.lid || 0) + 1) % LIDERES.length }); mostraAba(); },
       faces: faces,
       temCola: cola.length > 0 && !sel && !this.state.colaAberta,
       colaN: String(cola.length),
