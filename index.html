@@ -65,6 +65,10 @@ html{scroll-behavior:smooth}
 .stp-btn{transition:transform .2s,background-color .2s,color .2s}
 
 .stp-nav a{position:relative}
+.stp-burger{display:none;align-items:center;justify-content:center;width:46px;height:46px;border:0;background:#111111;color:#FFFFFF;cursor:pointer;padding:0}
+@media (max-width: 820px){.stp-burger{display:flex}.stp-marca{font-size:18px!important}.stp-nav{display:none!important;width:100%;flex-direction:column;align-items:stretch!important;gap:0!important;padding:2px 0 14px;border-top:1px solid #EEEEEE}.stp-nav.aberto{display:flex!important;animation:stp-menu-in .2s ease-out both}.stp-nav>a:not(.stp-btn){padding:15px 0!important;border-bottom:1px solid #EEEEEE;font-size:17px}.stp-nav>.stp-btn{margin-top:16px;text-align:center}.stp-nav .stp-social-grp{margin:12px 0 0 -10px!important}}
+@keyframes stp-menu-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
 .stp-nav a:hover{color:#E50000}
 .stp-social{transition:color .2s,background .2s}.stp-nav a.stp-social:hover{color:#FFFFFF;background:#E50000}
 @keyframes stp-in-top{from{transform:translateY(-60%);opacity:0}to{transform:none;opacity:1}}
@@ -91,13 +95,17 @@ html{scroll-behavior:smooth}
 <div style="max-width: 1360px; margin: 0 auto; padding: 16px var(--g); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
 <a href="#inicio" style="display: flex; align-items: center; gap: 12px; color: #111111; text-decoration: none">
 <img src="assets/2e34820963684edba32fbb6ab281398f.png" alt="" width="64" height="32" style="width: 64px; height: 32px; display: block">
-<span style="font-weight: 700; font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; color: #E50000">Salve o Tricolor Paulista</span>
+<span class="stp-marca" style="font-weight: 700; font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; color: #E50000">Salve o Tricolor Paulista</span>
 </a>
-<nav class="stp-nav" aria-label="Navegação principal" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; font-weight: 700; font-size: 16px; letter-spacing: 0.14em; text-transform: uppercase">
-<a href="#manifesto" style="color: #111111; text-decoration: none; padding: 10px 0">Manifesto</a>
-<a href="#pilares" style="color: #111111; text-decoration: none; padding: 10px 0">Pilares</a>
-<a href="#liderancas" style="color: #111111; text-decoration: none; padding: 10px 0">Lideranças</a>
-<a href="#candidatos" style="color: #111111; text-decoration: none; padding: 10px 0">Candidatos</a>
+<button type="button" class="stp-burger" onClick="{{alternarMenu}}" aria-controls="stp-menu" aria-expanded="{{menuExpandido}}" aria-label="{{menuRotulo}}">
+<sc-if value="{{menuFechado}}"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M3 6h18M3 12h18M3 18h18"></path></svg></sc-if>
+<sc-if value="{{menuAberto}}"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 5l14 14M19 5L5 19"></path></svg></sc-if>
+</button>
+<nav id="stp-menu" class="stp-nav {{menuClasse}}" aria-label="Navegação principal" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; font-weight: 700; font-size: 16px; letter-spacing: 0.14em; text-transform: uppercase">
+<a href="#manifesto" onClick="{{fecharMenu}}" style="color: #111111; text-decoration: none; padding: 10px 0">Manifesto</a>
+<a href="#pilares" onClick="{{fecharMenu}}" style="color: #111111; text-decoration: none; padding: 10px 0">Pilares</a>
+<a href="#liderancas" onClick="{{fecharMenu}}" style="color: #111111; text-decoration: none; padding: 10px 0">Lideranças</a>
+<a href="#candidatos" onClick="{{fecharMenu}}" style="color: #111111; text-decoration: none; padding: 10px 0">Candidatos</a>
 <a class="stp-btn" href="https://74d3b507-ded4-425c-b4eb-472e9d017d9e.usrfiles.com/ugd/4830c0_bda07dd3346e4046a01694b174828d54.pdf" target="_blank" rel="noopener" download="STP2026.pdf" style="color: #FFFFFF; text-decoration: none; padding: 11px 18px 9px; background: #E50000">Baixe o e-book</a>
 <span class="stp-social-grp" style="display: flex; align-items: center; gap: 2px; margin-left: -10px"><a class="stp-social" href="https://instagram.com/salveotricolorpaulistaspfc" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; color: #111111; text-decoration: none"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.6"></circle></svg></a><a class="stp-social" href="https://www.facebook.com/salveotricolorpaulistaspfc" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; color: #111111; text-decoration: none"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a><a class="stp-social" href="https://x.com/salveotpspfc" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; color: #111111; text-decoration: none"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l16 16M20 4L4 20"></path></svg></a></span>
 </nav>
@@ -769,7 +777,7 @@ var LIDERES = [
   { cargo: "CONSELHEIRO VITALÍCIO", nome: "Carlos Caboclo", curto: "Carlos Caboclo", foto: "assets/cf8199a0caf18ef4b6f7d81d7210b254.jpg", texto: "Colaborador do clube desde 1967, foi diretor de futebol nos anos 1970 e 1980 e ocupou cargos na base, na comunicação e no marketing. Foi quem trouxe Telê Santana de volta ao São Paulo, em 1990." }
 ];
 class Component extends DCLogic {
-  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: (function(){ try { var c = new URLSearchParams(location.search).get("c"); return c && /^\d{3}$/.test(c) ? c : ""; } catch (e) { return ""; } })(), copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "", lid: 0, longe: false }; var self = this; try { window.addEventListener("scroll", function(){ var l = (window.scrollY || window.pageYOffset || 0) > 700; if (l !== !!self.state.longe) self.setState({ longe: l }); }, { passive: true }); } catch (e) {} }
+  constructor(props){ super(props); this.state = { q: "", filtro: "todos", sel: (function(){ try { var c = new URLSearchParams(location.search).get("c"); return c && /^\d{3}$/.test(c) ? c : ""; } catch (e) { return ""; } })(), copiado: false, cola: lerCola(), colaAberta: false, colaCopiada: false, gerando: false, colaImg: "", imgAviso: "", lid: 0, longe: false, menu: false }; var self = this; try { window.addEventListener("scroll", function(){ var l = (window.scrollY || window.pageYOffset || 0) > 700; if (l !== !!self.state.longe) self.setState({ longe: l }); }, { passive: true }); } catch (e) {} }
   renderVals() {
     var self = this;
     var q = semAcento(this.state.q).trim();
@@ -828,6 +836,13 @@ class Component extends DCLogic {
       temCola: cola.length > 0 && !sel && !this.state.colaAberta,
       topoSolto: !!this.state.longe && cola.length === 0 && !sel && !this.state.colaAberta,
       topoNaBarra: !!this.state.longe && cola.length > 0 && !sel && !this.state.colaAberta,
+      menuAberto: !!this.state.menu,
+      menuFechado: !this.state.menu,
+      menuClasse: this.state.menu ? "aberto" : "",
+      menuExpandido: this.state.menu ? "true" : "false",
+      menuRotulo: this.state.menu ? "Fechar menu" : "Abrir menu",
+      alternarMenu: function(){ self.setState({ menu: !self.state.menu }); },
+      fecharMenu: function(){ if (self.state.menu) self.setState({ menu: false }); },
       irTopo: function(){ try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch (e) { window.scrollTo(0, 0); } },
       colaN: String(cola.length),
       colaResumo: colaLista.map(function(c){ return c.num; }).join(" · "),
