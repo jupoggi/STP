@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel do site | Salve o Tricolor Paulista</title>
+<link rel="icon" href="/assets/2e34820963684edba32fbb6ab281398f.png">
+<style>
+@font-face{font-family:'Gotham Condensed';src:url('/assets/278551e46e341abde6d48d89537d45f5.woff2') format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:'Gotham Condensed';src:url('/assets/7b4a4393b3173187567eb0c5cbe6eb31.woff2') format('woff2');font-weight:500;font-display:block}
+@font-face{font-family:'Gotham Condensed';src:url('/assets/0bb9d031bf2b3b84b45b603ce0521b25.woff2') format('woff2');font-weight:700;font-display:block}
+:root{--red:#E50000;--ink:#111;--ink2:#555;--ink3:#888;--line:#E6E6E6;--bg:#F4F4F2;--card:#fff;--g:clamp(16px,4vw,48px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Gotham Condensed','Arial Narrow',Arial,sans-serif;font-size:18px;line-height:1.35;-webkit-font-smoothing:antialiased}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.topo{max-width:1280px;margin:0 auto;padding:14px var(--g);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca span{font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--red)}
+.marca b{font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+main{max-width:1280px;margin:0 auto;padding:28px var(--g) 60px}
+h1{margin:0 0 4px;font-weight:700;font-size:clamp(34px,5vw,52px);line-height:.95;text-transform:uppercase}
+h1 span{color:var(--red)}
+.sub{color:var(--ink2);margin:0 0 20px}
+.barra{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 22px}
+.seg{display:inline-flex;border:2px solid var(--ink);background:#fff}
+.seg button{font:inherit;font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;border:0;background:none;padding:9px 14px;cursor:pointer;color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.btn{font:inherit;font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;border:2px solid var(--ink);background:#fff;padding:9px 14px;cursor:pointer}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.status{color:var(--ink2);font-size:15px;margin-left:auto}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
+.card{background:var(--card);border:1px solid var(--line);padding:18px 20px;min-width:0}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media (max-width:900px){.c3{grid-column:span 6}.c4,.c6,.c8{grid-column:span 12}}
+@media (max-width:520px){.c3{grid-column:span 12}}
+.k-label{font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.k-val{font-weight:700;font-size:54px;line-height:1;margin-top:8px;font-variant-numeric:tabular-nums}
+.k-note{color:var(--ink3);font-size:14px;margin-top:4px}
+h2{margin:0 0 12px;font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+h2 .seg button{font-size:12px;padding:5px 9px}
+.bars{display:flex;flex-direction:column;gap:3px}
+.row{display:grid;grid-template-columns:150px 1fr 48px;align-items:center;gap:10px;font-size:16px;padding:2px 0;border-radius:3px}
+.row:hover{background:#F4F4F2}
+.row .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .n em{font-style:normal;font-weight:700;color:var(--red);margin-right:6px}
+.row .t{height:14px;background:#F0F0EE;position:relative}
+.row .f{position:absolute;left:0;top:0;bottom:0;background:var(--red);border-radius:0 4px 4px 0;min-width:0}
+.row .f.ink{background:var(--ink)}
+.row .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.vazio{color:var(--ink3);font-size:15px;padding:8px 0}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:14px;padding:6px 9px;white-space:nowrap;transform:translate(-50%,-110%);display:none;z-index:2}
+.chave{background:#fff;border:2px solid var(--ink);padding:24px;max-width:620px}
+.chave input{width:100%;font:inherit;font-size:18px;padding:10px 12px;border:2px solid #ccc;margin:10px 0 12px}
+.chave ol{padding-left:20px;color:var(--ink2);margin:8px 0 0}
+.erro{background:#FFF0F0;border-left:4px solid var(--red);padding:12px 16px;margin:0 0 18px;display:none}
+.nota{color:var(--ink3);font-size:14px;margin-top:18px}
+details summary{cursor:pointer;font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin-top:10px}
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:8px}
+td,th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<header><div class="topo">
+  <a class="marca" href="/"><img src="/assets/2e34820963684edba32fbb6ab281398f.png" alt="" width="56" height="28"><span>Salve o Tricolor Paulista</span></a>
+  <b style="font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:#555">Painel interno</b>
+</div></header>
+<main>
+  <h1><span>Painel</span> do site</h1>
+  <p class="sub">Acessos e colas montadas, direto do GoatCounter. Página interna: não é divulgada nem aparece no Google.</p>
+
+  <section id="pedeChave" class="chave" style="display:none">
+    <div class="k-label">Chave de acesso do GoatCounter</div>
+    <input id="chave" type="password" autocomplete="off" placeholder="Cole aqui a chave (API key)">
+    <button class="btn red" id="salvaChave">Entrar</button>
+    <ol>
+      <li>Em stp.goatcounter.com, clique no seu usuário no menu de cima e depois em <b>API</b>.</li>
+      <li>Crie uma chave marcando só <b>Read statistics</b> (ler estatísticas).</li>
+      <li>Cole aqui. A chave fica salva só neste navegador.</li>
+    </ol>
+  </section>
+
+  <div id="erro" class="erro"></div>
+
+  <section id="painel" style="display:none">
+    <div class="barra">
+      <div class="seg" id="periodo" role="group" aria-label="Período">
+        <button data-p="hoje">Hoje</button><button data-p="7">7 dias</button><button data-p="30">30 dias</button><button data-p="tudo" aria-pressed="true">Desde o início</button>
+      </div>
+      <button class="btn" id="atualiza">Atualizar</button>
+      <button class="btn" id="sair">Trocar chave</button>
+      <span class="status" id="status"></span>
+    </div>
+
+    <div class="grid">
+      <div class="card c3"><div class="k-label">Visitantes</div><div class="k-val" id="kVis">–</div><div class="k-note">pessoas que abriram o site</div></div>
+      <div class="card c3"><div class="k-label">Colas montadas</div><div class="k-val" id="kCola">–</div><div class="k-note" id="kColaNota">enviadas, copiadas ou salvas</div></div>
+      <div class="card c3"><div class="k-label">Perfis abertos</div><div class="k-val" id="kPerf">–</div><div class="k-note">fichas de candidatos vistas</div></div>
+      <div class="card c3"><div class="k-label">Compartilhamentos</div><div class="k-val" id="kComp">–</div><div class="k-note">perfis enviados no WhatsApp</div></div>
+
+      <div class="card c6"><h2>Visitantes por dia</h2><div class="chart" id="gVis"></div></div>
+      <div class="card c6"><h2>Colas montadas por dia</h2><div class="chart" id="gCola"></div></div>
+
+      <div class="card c8">
+        <h2><span>Candidatos</span>
+          <span class="seg" id="modo" role="group" aria-label="Medida">
+            <button data-m="enviada" aria-pressed="true">Nas colas enviadas</button><button data-m="escolheu">Escolhidos</button><button data-m="perfil">Perfis abertos</button><button data-m="compartilhou">Compartilhados</button>
+          </span>
+        </h2>
+        <div class="bars" id="bCand"></div>
+        <details><summary>Ver como tabela</summary><table id="tCand"></table></details>
+      </div>
+      <div class="card c4">
+        <h2>Como a cola foi enviada</h2><div class="bars" id="bComo"></div>
+        <h2 style="margin-top:26px">Quantos nomes na cola</h2><div class="bars" id="bTam"></div>
+      </div>
+
+      <div class="card c6"><h2>Páginas mais vistas</h2><div class="bars" id="bPag"></div></div>
+      <div class="card c6"><h2>De onde vêm os visitantes</h2><div class="bars" id="bRef"></div></div>
+    </div>
+    <p class="nota">Os números vêm do GoatCounter, que não usa cookies e conta pessoas únicas por período: se a mesma pessoa monta duas colas no mesmo dia, pode contar uma vez só. Por isso os totais servem como tendência, não como contagem exata.</p>
+  </section>
+</main>
+<script>
+var CANDS = {"002": "Abdalla", "005": "Andrea Forte", "006": "Toninho Salles", "007": "Armando Martinez", "008": "Arriagada", "012": "Bernardino Sena", "015": "Caio Forjaz", "020": "Chileno", "022": "Constantino Cury", "023": "Cris Pet", "027": "Diego Roschel", "028": "Digão", "030": "Dudli", "032": "Eder do Lago", "033": "Eduardo Galvão", "036": "Erica Busnello", "038": "Fábio Machado", "043": "Flavio Marques", "049": "Joandre", "054": "Kalefinho", "060": "Caram", "061": "Malandrino", "067": "Mario Bombi", "068": "Miguel Passa Bola", "069": "Miudo", "071": "Neto", "073": "Odilon Mutti", "074": "Orlando Rossini", "077": "Paulo Faria", "079": "Pedro Facchini", "080": "Pedro Turqueto", "082": "Rafael Jacobson", "083": "Renato Domingos", "087": "Roberto Kirschner", "089": "Rodrigo Sérvulo", "093": "Silvia", "097": "Toca", "101": "Vitinho Gagliardi", "103": "Xará"};
+var BASE = "https://stp.goatcounter.com/api/v0";
+var INICIO = "2026-11-01";
+var KEY = "stp-goatcounter-chave";
+var periodo = "tudo", modo = "enviada", dados = null;
+var DEMO = /[?&]demo=1/.test(location.search);
+function $(id){ return document.getElementById(id); }
+function lerChave(){ try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } }
+function gravaChave(v){ try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) {} }
+function pad(n){ return String(n).padStart(2, "0"); }
+function isoLocal(d){ var o = -d.getTimezoneOffset(), s = o >= 0 ? "+" : "-"; o = Math.abs(o); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":00:00"+s+pad(Math.floor(o/60))+":"+pad(o%60); }
+function intervalo(){
+  var fim = new Date(); fim.setMinutes(0,0,0); fim.setHours(fim.getHours()+1);
+  var ini = new Date(fim);
+  if (periodo === "hoje") { ini = new Date(); ini.setHours(0,0,0,0); }
+  else if (periodo === "7") { ini = new Date(); ini.setHours(0,0,0,0); ini.setDate(ini.getDate()-6); }
+  else if (periodo === "30") { ini = new Date(); ini.setHours(0,0,0,0); ini.setDate(ini.getDate()-29); }
+  else { ini = new Date(INICIO + "T00:00:00"); }
+  return { start: isoLocal(ini), end: isoLocal(fim) };
+}
+var espera = Promise.resolve();
+function api(caminho, params){
+  var u = new URL(BASE + caminho);
+  Object.keys(params || {}).forEach(function(k){ var v = params[k]; if (Array.isArray(v)) v.forEach(function(x){ u.searchParams.append(k, x); }); else if (v !== undefined) u.searchParams.set(k, v); });
+  var p = espera.then(function(){ return fetch(u.toString(), { headers: { "Authorization": "Bearer " + lerChave() } }); });
+  espera = p.then(function(){ return new Promise(function(ok){ setTimeout(ok, 260); }); }, function(){});
+  return p.then(function(r){
+    if (r.status === 401 || r.status === 403) { var e = new Error("chave"); e.chave = true; throw e; }
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  });
+}
+function todasHits(iv){
+  var todas = [], vistos = [];
+  function pagina(){
+    return api("/stats/hits", { start: iv.start, end: iv.end, limit: 100, group: "day", exclude_paths: vistos }).then(function(j){
+      (j.hits || []).forEach(function(h){ todas.push(h); vistos.push(String(h.path_id)); });
+      if (j.more && (j.hits || []).length && vistos.length < 2000) return pagina();
+      return todas;
+    });
+  }
+  return pagina();
+}
+function carregar(){
+  $("erro").style.display = "none";
+  $("status").textContent = "Carregando…";
+  var iv = intervalo();
+  var p = DEMO ? Promise.resolve(demo(iv)) : Promise.all([
+    api("/stats/total", { start: iv.start, end: iv.end, group: "day" }),
+    todasHits(iv),
+    api("/stats/toprefs", { start: iv.start, end: iv.end, limit: 15 }).catch(function(){ return { stats: [] }; })
+  ]).then(function(r){ return { total: r[0], hits: r[1], refs: r[2], iv: iv }; });
+  p.then(function(d){ dados = d; desenhar(); $("status").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); })
+   .catch(function(e){
+     $("status").textContent = "";
+     if (e && e.chave) { $("erro").innerHTML = "<b>A chave não foi aceita.</b> Confira se ela tem a permissão de ler estatísticas e cole de novo."; $("erro").style.display = "block"; mostrarChave(); return; }
+     $("erro").innerHTML = "<b>Não foi possível buscar os dados do GoatCounter.</b> " + (e && e.message === "Failed to fetch" ? "O navegador bloqueou a consulta (o GoatCounter pode não permitir acesso a partir de outro site) ou a internet caiu." : (e && e.message ? e.message : ""));
+     $("erro").style.display = "block";
+   });
+}
+function fmt(n){ return Number(n || 0).toLocaleString("pt-BR"); }
+function soma(lista){ return lista.reduce(function(a, h){ return a + (h.count || 0); }, 0); }
+function porPrefixo(hits, pre){ return hits.filter(function(h){ return h.event && h.path.indexOf(pre) === 0; }); }
+function desenhar(){
+  var d = dados, hits = d.hits;
+  var paginas = hits.filter(function(h){ return !h.event; });
+  var criada = hits.filter(function(h){ return h.event && h.path === "cola-criada"; })[0];
+  $("kVis").textContent = fmt((d.total.total || 0) - (d.total.total_events || 0));
+  $("kCola").textContent = fmt(criada ? criada.count : 0);
+  $("kPerf").textContent = fmt(soma(porPrefixo(hits, "perfil-")));
+  $("kComp").textContent = fmt(soma(porPrefixo(hits, "compartilhou-")));
+  linha($("gVis"), (d.total.stats || []).map(function(s){ return { day: s.day, v: s.daily || 0 }; }), "visitantes");
+  linha($("gCola"), dias(d.iv, criada ? criada.stats : []), "colas");
+  candidatos();
+  var como = { "whatsapp": "WhatsApp", "imagem": "Salvou a imagem", "copiou-texto": "Copiou o texto" };
+  barras($("bComo"), Object.keys(como).map(function(k){ var h = hits.filter(function(x){ return x.event && x.path === "cola-" + k; })[0]; return { nome: como[k], v: h ? h.count : 0 }; }), false);
+  var tam = porPrefixo(hits, "cola-tamanho-").map(function(h){ return { n: Number(h.path.replace("cola-tamanho-", "")), v: h.count }; }).sort(function(a, b){ return a.n - b.n; });
+  barras($("bTam"), tam.map(function(t){ return { nome: t.n + (t.n === 1 ? " nome" : " nomes"), v: t.v }; }), false, true);
+  barras($("bPag"), paginas.sort(function(a, b){ return b.count - a.count; }).slice(0, 12).map(function(h){ return { nome: nomePagina(h), v: h.count }; }), false, true);
+  barras($("bRef"), (d.refs.stats || []).map(function(s){ return { nome: s.name || "Acesso direto", v: s.count }; }), false, true);
+}
+function nomePagina(h){
+  if (h.path === "/" || h.path === "/index.html") return "Página inicial";
+  var m = h.path.match(/candidatos\/(\d{3})/); if (m) return "Perfil " + m[1] + " " + (CANDS[m[1]] || "");
+  if (/termos/.test(h.path)) return "Termos e privacidade";
+  return h.title || h.path;
+}
+function dias(iv, stats){
+  var mapa = {}; (stats || []).forEach(function(s){ mapa[s.day] = s.daily || 0; });
+  var out = [], d = new Date(iv.start.slice(0, 10) + "T12:00:00"), fim = new Date(iv.end.slice(0, 10) + "T12:00:00");
+  while (d <= fim) { var k = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); out.push({ day: k, v: mapa[k] || 0 }); d.setDate(d.getDate()+1); }
+  return out;
+}
+function candidatos(){
+  var hits = dados.hits, pre = { enviada: "cola-enviada-", escolheu: "cola-escolheu-", perfil: "perfil-", compartilhou: "compartilhou-" }[modo];
+  var mapa = {}; porPrefixo(hits, pre).forEach(function(h){ mapa[h.path.slice(pre.length)] = h.count; });
+  var lista = Object.keys(CANDS).map(function(n){ return { num: n, nome: CANDS[n], v: mapa[n] || 0 }; }).sort(function(a, b){ return b.v - a.v || a.num.localeCompare(b.num); });
+  barras($("bCand"), lista.map(function(c){ return { num: c.num, nome: c.nome, v: c.v }; }), true);
+  $("tCand").innerHTML = "<tr><th>Nº</th><th>Candidato</th><th class=r>Total</th></tr>" + lista.map(function(c){ return "<tr><td>" + c.num + "</td><td>" + c.nome + "</td><td class=r>" + fmt(c.v) + "</td></tr>"; }).join("");
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function barras(el, itens, comNum, tinta){
+  var max = itens.reduce(function(m, i){ return Math.max(m, i.v); }, 0);
+  if (!itens.length || max === 0) { el.innerHTML = '<div class="vazio">Ainda sem registros neste período.</div>'; return; }
+  el.innerHTML = itens.map(function(i){
+    var w = max ? (i.v / max * 100) : 0;
+    var nome = (comNum ? "<em>" + i.num + "</em>" : "") + esc(i.nome);
+    return '<div class="row" title="' + esc((i.num ? i.num + " " : "") + i.nome) + ': ' + fmt(i.v) + '"><span class="n">' + nome + '</span><span class="t"><span class="f' + (tinta ? " ink" : "") + '" style="width:' + w.toFixed(1) + '%"></span></span><span class="v">' + fmt(i.v) + '</span></div>';
+  }).join("");
+}
+function linha(el, pts, unidade){
+  var W = 560, H = 200, L = 34, R = 10, T = 12, B = 26;
+  if (!pts.length) { el.innerHTML = '<div class="vazio">Ainda sem registros neste período.</div>'; return; }
+  var max = Math.max(1, Math.max.apply(null, pts.map(function(p){ return p.v; })));
+  var passo = Math.pow(10, Math.floor(Math.log10(max))); var topo = Math.ceil(max / passo) * passo; if (topo / passo < 3) { passo = passo / 2; }
+  var x = function(i){ return L + (pts.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (pts.length - 1)); };
+  var y = function(v){ return T + (H - T - B) * (1 - v / topo); };
+  var grid = ""; for (var g = 0; g <= topo + 1e-9; g += passo) { grid += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="#ECECEC"/><text x="' + (L - 6) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="#888">' + fmt(g) + '</text>'; }
+  var cada = Math.max(1, Math.ceil(pts.length / 7)), eixo = "";
+  pts.forEach(function(p, i){ if (i % cada === 0 || i === pts.length - 1) eixo += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle" font-size="11" fill="#888">' + p.day.slice(8, 10) + '/' + p.day.slice(5, 7) + '</text>'; });
+  var d = pts.map(function(p, i){ return (i ? "L" : "M") + x(i).toFixed(1) + " " + y(p.v).toFixed(1); }).join(" ");
+  var area = d + " L" + x(pts.length - 1).toFixed(1) + " " + y(0) + " L" + x(0).toFixed(1) + " " + y(0) + " Z";
+  el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + unidade + ' por dia">' + grid + eixo +
+    '<path d="' + area + '" fill="#E50000" opacity=".08"/><path d="' + d + '" fill="none" stroke="#E50000" stroke-width="2" stroke-linejoin="round"/>' +
+    '<line id="cx" y1="' + T + '" y2="' + (H - B) + '" stroke="#111" stroke-width="1" visibility="hidden"/><circle id="cp" r="5" fill="#E50000" stroke="#fff" stroke-width="2" visibility="hidden"/>' +
+    '<rect x="' + L + '" y="0" width="' + (W - L - R) + '" height="' + H + '" fill="transparent"/></svg><div class="tip"></div>';
+  var svg = el.querySelector("svg"), tip = el.querySelector(".tip"), cx = svg.querySelector("#cx"), cp = svg.querySelector("#cp");
+  svg.addEventListener("mousemove", function(ev){
+    var r = svg.getBoundingClientRect(), mx = (ev.clientX - r.left) / r.width * W;
+    var i = pts.length === 1 ? 0 : Math.round((mx - L) / ((W - L - R) / (pts.length - 1))); i = Math.max(0, Math.min(pts.length - 1, i));
+    var p = pts[i]; cx.setAttribute("x1", x(i)); cx.setAttribute("x2", x(i)); cx.setAttribute("visibility", "visible");
+    cp.setAttribute("cx", x(i)); cp.setAttribute("cy", y(p.v)); cp.setAttribute("visibility", "visible");
+    tip.style.display = "block"; tip.style.left = (x(i) / W * r.width) + "px"; tip.style.top = (y(p.v) / H * r.height) + "px";
+    tip.textContent = p.day.slice(8, 10) + "/" + p.day.slice(5, 7) + " · " + fmt(p.v) + " " + unidade;
+  });
+  svg.addEventListener("mouseleave", function(){ tip.style.display = "none"; cx.setAttribute("visibility", "hidden"); cp.setAttribute("visibility", "hidden"); });
+}
+function demo(iv){
+  var nums = Object.keys(CANDS), rnd = function(a){ return Math.floor(Math.random() * a); };
+  var ds = dias(iv, []).map(function(p, i){ return { day: p.day, daily: 40 + rnd(200) + i * 6 }; });
+  var hits = [{ path: "/", title: "Início", event: false, count: 2100 }, { path: "/candidatos/080.html", event: false, count: 140 }, { path: "/termos-e-privacidade.html", event: false, count: 12 },
+    { path: "cola-criada", event: true, count: 412, stats: ds.map(function(s){ return { day: s.day, daily: rnd(40) }; }) },
+    { path: "cola-whatsapp", event: true, count: 260 }, { path: "cola-imagem", event: true, count: 98 }, { path: "cola-copiou-texto", event: true, count: 54 }];
+  [20, 18, 15, 12, 10, 8, 5, 3].forEach(function(n){ hits.push({ path: "cola-tamanho-" + n, event: true, count: rnd(120) + 5 }); });
+  nums.forEach(function(n){ ["cola-enviada-", "cola-escolheu-", "perfil-", "compartilhou-"].forEach(function(p){ hits.push({ path: p + n, event: true, count: rnd(300) }); }); });
+  return { total: { total: 5200, total_events: 2100, stats: ds }, hits: hits, refs: { stats: [{ name: "", count: 1900 }, { name: "l.instagram.com", count: 620 }, { name: "Google", count: 410 }, { name: "lm.facebook.com", count: 220 }] }, iv: iv };
+}
+function mostrarChave(){ $("pedeChave").style.display = "block"; $("painel").style.display = "none"; }
+function mostrarPainel(){ $("pedeChave").style.display = "none"; $("painel").style.display = "block"; carregar(); }
+$("salvaChave").onclick = function(){ var v = $("chave").value.trim(); if (!v) return; gravaChave(v); $("chave").value = ""; mostrarPainel(); };
+$("chave").addEventListener("keydown", function(e){ if (e.key === "Enter") $("salvaChave").click(); });
+$("sair").onclick = function(){ gravaChave(""); mostrarChave(); };
+$("atualiza").onclick = carregar;
+document.querySelectorAll("#periodo button").forEach(function(b){ b.onclick = function(){ periodo = b.dataset.p; document.querySelectorAll("#periodo button").forEach(function(x){ x.setAttribute("aria-pressed", x === b); }); carregar(); }; });
+document.querySelectorAll("#modo button").forEach(function(b){ b.onclick = function(){ modo = b.dataset.m; document.querySelectorAll("#modo button").forEach(function(x){ x.setAttribute("aria-pressed", x === b); }); if (dados) candidatos(); }; });
+if (DEMO || lerChave()) mostrarPainel(); else mostrarChave();
+</script>
+</body>
+</html>
