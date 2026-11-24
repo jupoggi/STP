@@ -162,7 +162,8 @@ function agregar(iv, offset, acc){
   return fetch(API + "/wix-data/v2/items/aggregate-pipeline", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": lerChave(), "wix-site-id": SITE_ID }, body: JSON.stringify(corpo) })
     .then(function(r){
       if (r.status === 401 || r.status === 403) { var e = new Error("chave"); e.chave = true; throw e; }
-      if (!r.ok) return r.text().then(function(t){ throw new Error("HTTP " + r.status + " " + t.slice(0, 160)); });
+      if (!r.ok) return r.text().then(function(t){ if (/WDE0117|MetaSite not found|UNAUTHENTICATED|PERMISSION_DENIED/i.test(t)) { var e2 = new Error("chave"); e2.chave = true; throw e2; } throw new Error("HTTP " + r.status + " " + t.slice(0, 160)); });
+      if (false) return r.text().then(function(t){ throw new Error("HTTP " + r.status + " " + t.slice(0, 160)); });
       return r.json();
     })
     .then(function(j){
