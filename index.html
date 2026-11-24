@@ -701,10 +701,65 @@ var SITE = "https://www.salveotricolorpaulista.com.br";
 function msg(c){ return "Para o Conselho Deliberativo do SPFC, meu voto é " + c.apelido + ", número " + c.num + " — Chapa 01 São Paulo de Volta, com Marcelo Portugal Gouvêa presidente. Conheça o perfil: " + pagina(c); }
 function pagina(c){ return SITE + "/candidatos/" + c.num + ".html"; }
 var MAX_COLA = 20;
-// Estatísticas (GoatCounter). Só registra quando o site está no domínio publicado.
+// Estatísticas: GoatCounter e o banco próprio no Wix (coleção EventosSTP). Anônimo: sem cookies, sem identificador.
+// Só registra quando o site está no domínio publicado.
+var WIX_CLIENT = "9e907dfe-0a73-4515-853c-0b0988503c29";
+var WIX_API = "https://www.wixapis.com";
+var NO_AR = /(^|\.)salveotricolorpaulista\.com\.br$/.test(location.hostname);
+var filaEventos = [], timerEventos = null, tokenWix = null;
+function hojeSP(){ try { return new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" }); } catch (e) { return new Date().toISOString().slice(0, 10); } }
+function evento(caminho){
+  var m;
+  if ((m = /^(cola-enviada|cola-escolheu|perfil|compartilhou)-(\d{3})$/.exec(caminho))) return { tipo: m[1], candidato: m[2], valor: "" };
+  if ((m = /^cola-tamanho-(\d+)$/.exec(caminho))) return { tipo: "cola-tamanho", candidato: "", valor: m[1] };
+  if ((m = /^cola-(whatsapp|imagem|copiou-texto)$/.exec(caminho))) return { tipo: "cola-meio", candidato: "", valor: m[1] };
+  return { tipo: caminho, candidato: "", valor: "" };
+}
+function pegarToken(){
+  if (tokenWix && tokenWix.ate > Date.now() + 60000) return Promise.resolve(tokenWix.access);
+  var guardado = null;
+  try { guardado = JSON.parse(window.sessionStorage.getItem("stp-wix-token") || "null"); } catch (e) {}
+  if (guardado && guardado.ate > Date.now() + 60000) { tokenWix = guardado; return Promise.resolve(guardado.access); }
+  return fetch(WIX_API + "/oauth2/token", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientId: WIX_CLIENT, grantType: "anonymous" }) })
+    .then(function(r){ return r.json(); })
+    .then(function(j){ tokenWix = { access: j.access_token, ate: Date.now() + (j.expires_in || 3600) * 1000 }; try { window.sessionStorage.setItem("stp-wix-token", JSON.stringify(tokenWix)); } catch (e) {} return tokenWix.access; });
+}
+function enviarEventos(){
+  timerEventos = null;
+  var lote = filaEventos.splice(0, 100);
+  if (!lote.length) return;
+  pegarToken().then(function(tk){
+    return fetch(WIX_API + "/wix-data/v2/bulk/items/insert", { method: "POST", keepalive: true, headers: { "Content-Type": "application/json", "Authorization": tk }, body: JSON.stringify({ dataCollectionId: "EventosSTP", dataItems: lote.map(function(d){ return { data: d }; }) }) });
+  }).catch(function(){});
+  if (filaEventos.length) timerEventos = setTimeout(enviarEventos, 300);
+}
+function gravarEvento(caminho, extra){
+  if (!NO_AR) return;
+  var d = evento(caminho); d.dia = hojeSP();
+  if (extra) for (var k in extra) d[k] = extra[k];
+  filaEventos.push(d);
+  if (!timerEventos) timerEventos = setTimeout(enviarEventos, 400);
+}
 function rastrear(caminho, titulo){
   try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: caminho, title: titulo || caminho, event: true }); } catch (e) {}
+  try { gravarEvento(caminho); } catch (e) {}
 }
+(function(){
+  try {
+    if (!NO_AR) return;
+    var ref = "";
+    try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : ""; } catch (e) {}
+    if (/salveotricolorpaulista\.com\.br$/.test(ref)) ref = "";
+    var c = ""; try { c = new URLSearchParams(location.search).get("c") || ""; } catch (e) {}
+    gravarEvento("visita", { valor: ref || "direto", candidato: /^\d{3}$/.test(c) ? c : "" });
+    var hoje = hojeSP(), ultimo = "";
+    try { ultimo = window.localStorage.getItem("stp-ultima-visita") || ""; window.localStorage.setItem("stp-ultima-visita", hoje); } catch (e) {}
+    if (ultimo !== hoje) gravarEvento("visitante-dia", { valor: ultimo ? "voltou" : "novo" });
+    var esvaziar = function(){ if (filaEventos.length) { clearTimeout(timerEventos); enviarEventos(); } };
+    window.addEventListener("pagehide", esvaziar);
+    document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") esvaziar(); });
+  } catch (e) {}
+})();
 var COLA_KEY = "stp-cola-2026";
 function lerCola(){ try { var v = JSON.parse(window.localStorage.getItem(COLA_KEY) || "[]"); return Array.isArray(v) ? v.filter(function(n){ return CANDIDATOS.some(function(c){ return c.num === n; }); }).slice(0, MAX_COLA) : []; } catch (e) { return []; } }
 function carregaImg(src){

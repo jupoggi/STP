@@ -70,15 +70,16 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
 </div></header>
 <main>
   <h1><span>Painel</span> do site</h1>
-  <p class="sub">Acessos e colas montadas, direto do GoatCounter. Página interna: não é divulgada nem aparece no Google.</p>
+  <p class="sub">Acessos e colas montadas, direto do banco de dados do site no Wix. Página interna: não é divulgada nem aparece no Google.</p>
 
   <section id="pedeChave" class="chave" style="display:none">
-    <div class="k-label">Chave de acesso do GoatCounter</div>
+    <div class="k-label">Chave de API do Wix</div>
     <input id="chave" type="password" autocomplete="off" placeholder="Cole aqui a chave (API key)">
     <button class="btn red" id="salvaChave">Entrar</button>
     <ol>
-      <li>Em stp.goatcounter.com, clique no seu usuário no menu de cima e depois em <b>API</b>.</li>
-      <li>Crie uma chave marcando só <b>Read statistics</b> (ler estatísticas).</li>
+      <li>Entre no Wix com a conta dona do site e abra <b>manage.wix.com/account/api-keys</b>.</li>
+      <li>Clique em <b>Generate API Key</b>, dê um nome (ex.: “Painel STP”) e escolha o site <b>Salve o Tricolor Paulista</b>.</li>
+      <li>Em permissões, marque só <b>Wix Data</b> (leitura de itens). Gere e copie a chave.</li>
       <li>Cole aqui. A chave fica salva só neste navegador.</li>
     </ol>
   </section>
@@ -96,7 +97,7 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
     </div>
 
     <div class="grid">
-      <div class="card c3"><div class="k-label">Visitantes</div><div class="k-val" id="kVis">–</div><div class="k-note">pessoas que abriram o site</div></div>
+      <div class="card c3"><div class="k-label">Visitantes</div><div class="k-val" id="kVis">–</div><div class="k-note" id="kVisNota">aparelhos que abriram o site, por dia</div></div>
       <div class="card c3"><div class="k-label">Colas montadas</div><div class="k-val" id="kCola">–</div><div class="k-note" id="kColaNota">enviadas, copiadas ou salvas</div></div>
       <div class="card c3"><div class="k-label">Perfis abertos</div><div class="k-val" id="kPerf">–</div><div class="k-note">fichas de candidatos vistas</div></div>
       <div class="card c3"><div class="k-label">Compartilhamentos</div><div class="k-val" id="kComp">–</div><div class="k-note">perfis enviados no WhatsApp</div></div>
@@ -118,112 +119,113 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
         <h2 style="margin-top:26px">Quantos nomes na cola</h2><div class="bars" id="bTam"></div>
       </div>
 
-      <div class="card c6"><h2>Páginas mais vistas</h2><div class="bars" id="bPag"></div></div>
+      <div class="card c6"><h2>Visitas que chegaram por link de candidato</h2><div class="bars" id="bPag"></div></div>
       <div class="card c6"><h2>De onde vêm os visitantes</h2><div class="bars" id="bRef"></div></div>
     </div>
-    <p class="nota">Os números vêm do GoatCounter, que não usa cookies e conta pessoas únicas por período: se a mesma pessoa monta duas colas no mesmo dia, pode contar uma vez só. Por isso os totais servem como tendência, não como contagem exata.</p>
+    <p class="nota">Os números vêm da coleção “Eventos STP” do Wix, gravada pelo próprio site sem cookies e sem identificar ninguém. “Visitantes” conta cada aparelho uma vez por dia; somando vários dias, a mesma pessoa pode aparecer mais de uma vez. Bloqueadores de anúncio e navegação anônima podem deixar alguns acessos de fora.</p>
   </section>
 </main>
 <script>
 var CANDS = {"002": "Abdalla", "005": "Andrea Forte", "006": "Toninho Salles", "007": "Armando Martinez", "008": "Arriagada", "012": "Bernardino Sena", "015": "Caio Forjaz", "020": "Chileno", "022": "Constantino Cury", "023": "Cris Pet", "027": "Diego Roschel", "028": "Digão", "030": "Dudli", "032": "Eder do Lago", "033": "Eduardo Galvão", "036": "Erica Busnello", "038": "Fábio Machado", "043": "Flavio Marques", "049": "Joandre", "054": "Kalefinho", "060": "Caram", "061": "Malandrino", "067": "Mario Bombi", "068": "Miguel Passa Bola", "069": "Miudo", "071": "Neto", "073": "Odilon Mutti", "074": "Orlando Rossini", "077": "Paulo Faria", "079": "Pedro Facchini", "080": "Pedro Turqueto", "082": "Rafael Jacobson", "083": "Renato Domingos", "087": "Roberto Kirschner", "089": "Rodrigo Sérvulo", "093": "Silvia", "097": "Toca", "101": "Vitinho Gagliardi", "103": "Xará"};
-var BASE = "https://stp.goatcounter.com/api/v0";
+var API = "https://www.wixapis.com";
+var SITE_ID = "74d3b507-ded4-425c-b4eb-472e9d017d9e";
 var INICIO = "2026-11-01";
-var KEY = "stp-goatcounter-chave";
+var KEY = "stp-wix-chave";
 var periodo = "tudo", modo = "enviada", dados = null;
 var DEMO = /[?&]demo=1/.test(location.search);
 function $(id){ return document.getElementById(id); }
 function lerChave(){ try { return localStorage.getItem(KEY) || ""; } catch (e) { return ""; } }
 function gravaChave(v){ try { if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY); } catch (e) {} }
 function pad(n){ return String(n).padStart(2, "0"); }
-function isoLocal(d){ var o = -d.getTimezoneOffset(), s = o >= 0 ? "+" : "-"; o = Math.abs(o); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":00:00"+s+pad(Math.floor(o/60))+":"+pad(o%60); }
+function hojeSP(){ try { return new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" }); } catch (e) { return new Date().toISOString().slice(0, 10); } }
+function somaDias(dia, n){ var d = new Date(dia + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
 function intervalo(){
-  var fim = new Date(); fim.setMinutes(0,0,0); fim.setHours(fim.getHours()+1);
-  var ini = new Date(fim);
-  if (periodo === "hoje") { ini = new Date(); ini.setHours(0,0,0,0); }
-  else if (periodo === "7") { ini = new Date(); ini.setHours(0,0,0,0); ini.setDate(ini.getDate()-6); }
-  else if (periodo === "30") { ini = new Date(); ini.setHours(0,0,0,0); ini.setDate(ini.getDate()-29); }
-  else { ini = new Date(INICIO + "T00:00:00"); }
-  return { start: isoLocal(ini), end: isoLocal(fim) };
+  var fim = hojeSP(), ini = INICIO;
+  if (periodo === "hoje") ini = fim;
+  else if (periodo === "7") ini = somaDias(fim, -6);
+  else if (periodo === "30") ini = somaDias(fim, -29);
+  return { start: ini, end: fim };
 }
-var espera = Promise.resolve();
-function api(caminho, params){
-  var u = new URL(BASE + caminho);
-  Object.keys(params || {}).forEach(function(k){ var v = params[k]; if (Array.isArray(v)) v.forEach(function(x){ u.searchParams.append(k, x); }); else if (v !== undefined) u.searchParams.set(k, v); });
-  var p = espera.then(function(){ return fetch(u.toString(), { headers: { "Authorization": "Bearer " + lerChave() } }); });
-  espera = p.then(function(){ return new Promise(function(ok){ setTimeout(ok, 260); }); }, function(){});
-  return p.then(function(r){
-    if (r.status === 401 || r.status === 403) { var e = new Error("chave"); e.chave = true; throw e; }
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
-  });
-}
-function todasHits(iv){
-  var todas = [], vistos = [];
-  function pagina(){
-    return api("/stats/hits", { start: iv.start, end: iv.end, limit: 100, group: "day", exclude_paths: vistos }).then(function(j){
-      (j.hits || []).forEach(function(h){ todas.push(h); vistos.push(String(h.path_id)); });
-      if (j.more && (j.hits || []).length && vistos.length < 2000) return pagina();
-      return todas;
+function agregar(iv, offset, acc){
+  var corpo = {
+    dataCollectionId: "EventosSTP",
+    pipeline: {
+      paging: { limit: 1000, offset: offset },
+      stages: [
+        { filter: { $and: [ { dia: { $gte: iv.start } }, { dia: { $lte: iv.end } } ] } },
+        { group: {
+            groupIds: [ { key: "tipo", expression: { fieldPath: "tipo" } }, { key: "candidato", expression: { fieldPath: "candidato" } }, { key: "valor", expression: { fieldPath: "valor" } }, { key: "dia", expression: { fieldPath: "dia" } } ],
+            accumulators: [ { resultFieldName: "n", sum: { expression: { numeric: 1 } } } ] } }
+      ]
+    }
+  };
+  return fetch(API + "/wix-data/v2/items/aggregate-pipeline", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": lerChave(), "wix-site-id": SITE_ID }, body: JSON.stringify(corpo) })
+    .then(function(r){
+      if (r.status === 401 || r.status === 403) { var e = new Error("chave"); e.chave = true; throw e; }
+      if (!r.ok) return r.text().then(function(t){ throw new Error("HTTP " + r.status + " " + t.slice(0, 160)); });
+      return r.json();
+    })
+    .then(function(j){
+      var lote = (j.results || []).map(function(x){ var id = x._id || {}; return { tipo: x.tipo || id.tipo || "", candidato: x.candidato || id.candidato || "", valor: x.valor || id.valor || "", dia: x.dia || id.dia || "", n: x.n || 0 }; });
+      acc = acc.concat(lote);
+      if (lote.length === 1000 && offset < 50000) return agregar(iv, offset + 1000, acc);
+      return acc;
     });
-  }
-  return pagina();
 }
 function carregar(){
   $("erro").style.display = "none";
   $("status").textContent = "Carregando…";
   var iv = intervalo();
-  var p = DEMO ? Promise.resolve(demo(iv)) : Promise.all([
-    api("/stats/total", { start: iv.start, end: iv.end, group: "day" }),
-    todasHits(iv),
-    api("/stats/toprefs", { start: iv.start, end: iv.end, limit: 15 }).catch(function(){ return { stats: [] }; })
-  ]).then(function(r){ return { total: r[0], hits: r[1], refs: r[2], iv: iv }; });
+  var p = DEMO ? Promise.resolve(demo(iv)) : agregar(iv, 0, []).then(function(rows){ return { rows: rows, iv: iv }; });
   p.then(function(d){ dados = d; desenhar(); $("status").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); })
    .catch(function(e){
      $("status").textContent = "";
-     if (e && e.chave) { $("erro").innerHTML = "<b>A chave não foi aceita.</b> Confira se ela tem a permissão de ler estatísticas e cole de novo."; $("erro").style.display = "block"; mostrarChave(); return; }
-     $("erro").innerHTML = "<b>Não foi possível buscar os dados do GoatCounter.</b> " + (e && e.message === "Failed to fetch" ? "O navegador bloqueou a consulta (o GoatCounter pode não permitir acesso a partir de outro site) ou a internet caiu." : (e && e.message ? e.message : ""));
+     if (e && e.chave) { $("erro").innerHTML = "<b>A chave não foi aceita.</b> Confira se ela é do site Salve o Tricolor Paulista e tem permissão de Wix Data, e cole de novo."; $("erro").style.display = "block"; mostrarChave(); return; }
+     $("erro").innerHTML = "<b>Não foi possível buscar os dados.</b> " + esc(e && e.message === "Failed to fetch" ? "A internet caiu ou o navegador bloqueou a consulta." : (e && e.message ? e.message : ""));
      $("erro").style.display = "block";
    });
 }
 function fmt(n){ return Number(n || 0).toLocaleString("pt-BR"); }
-function soma(lista){ return lista.reduce(function(a, h){ return a + (h.count || 0); }, 0); }
-function porPrefixo(hits, pre){ return hits.filter(function(h){ return h.event && h.path.indexOf(pre) === 0; }); }
+function de(tipo){ return dados.rows.filter(function(r){ return r.tipo === tipo; }); }
+function total(rows){ return rows.reduce(function(a, r){ return a + r.n; }, 0); }
+function por(rows, campo){ var m = {}; rows.forEach(function(r){ m[r[campo]] = (m[r[campo]] || 0) + r.n; }); return m; }
 function desenhar(){
-  var d = dados, hits = d.hits;
-  var paginas = hits.filter(function(h){ return !h.event; });
-  var criada = hits.filter(function(h){ return h.event && h.path === "cola-criada"; })[0];
-  $("kVis").textContent = fmt((d.total.total || 0) - (d.total.total_events || 0));
-  $("kCola").textContent = fmt(criada ? criada.count : 0);
-  $("kPerf").textContent = fmt(soma(porPrefixo(hits, "perfil-")));
-  $("kComp").textContent = fmt(soma(porPrefixo(hits, "compartilhou-")));
-  linha($("gVis"), (d.total.stats || []).map(function(s){ return { day: s.day, v: s.daily || 0 }; }), "visitantes");
-  linha($("gCola"), dias(d.iv, criada ? criada.stats : []), "colas");
+  var vis = de("visitante-dia"), cola = de("cola-criada");
+  $("kVis").textContent = fmt(total(vis));
+  $("kVisNota").textContent = fmt(total(de("visita"))) + " visitas · aparelhos contados uma vez por dia";
+  $("kCola").textContent = fmt(total(cola));
+  $("kPerf").textContent = fmt(total(de("perfil")));
+  $("kComp").textContent = fmt(total(de("compartilhou")));
+  linha($("gVis"), dias(dados.iv, por(vis, "dia")), "visitantes");
+  linha($("gCola"), dias(dados.iv, por(cola, "dia")), "colas");
   candidatos();
-  var como = { "whatsapp": "WhatsApp", "imagem": "Salvou a imagem", "copiou-texto": "Copiou o texto" };
-  barras($("bComo"), Object.keys(como).map(function(k){ var h = hits.filter(function(x){ return x.event && x.path === "cola-" + k; })[0]; return { nome: como[k], v: h ? h.count : 0 }; }), false);
-  var tam = porPrefixo(hits, "cola-tamanho-").map(function(h){ return { n: Number(h.path.replace("cola-tamanho-", "")), v: h.count }; }).sort(function(a, b){ return a.n - b.n; });
-  barras($("bTam"), tam.map(function(t){ return { nome: t.n + (t.n === 1 ? " nome" : " nomes"), v: t.v }; }), false, true);
-  barras($("bPag"), paginas.sort(function(a, b){ return b.count - a.count; }).slice(0, 12).map(function(h){ return { nome: nomePagina(h), v: h.count }; }), false, true);
-  barras($("bRef"), (d.refs.stats || []).map(function(s){ return { nome: s.name || "Acesso direto", v: s.count }; }), false, true);
+  var como = { "whatsapp": "WhatsApp", "imagem": "Salvou a imagem", "copiou-texto": "Copiou o texto" }, mc = por(de("cola-meio"), "valor");
+  barras($("bComo"), Object.keys(como).map(function(k){ return { nome: como[k], v: mc[k] || 0 }; }), false);
+  var mt = por(de("cola-tamanho"), "valor");
+  barras($("bTam"), Object.keys(mt).map(Number).sort(function(a, b){ return a - b; }).map(function(n){ return { nome: n + (n === 1 ? " nome" : " nomes"), v: mt[n] }; }), false, true);
+  var ml = por(de("visita").filter(function(r){ return r.candidato; }), "candidato");
+  barras($("bPag"), Object.keys(ml).sort(function(a, b){ return ml[b] - ml[a]; }).slice(0, 12).map(function(n){ return { num: n, nome: CANDS[n] || "", v: ml[n] }; }), true, true);
+  var mr = por(de("visita"), "valor");
+  barras($("bRef"), Object.keys(mr).sort(function(a, b){ return mr[b] - mr[a]; }).slice(0, 12).map(function(k){ return { nome: nomeOrigem(k), v: mr[k] }; }), false, true);
 }
-function nomePagina(h){
-  if (h.path === "/" || h.path === "/index.html") return "Página inicial";
-  var m = h.path.match(/candidatos\/(\d{3})/); if (m) return "Perfil " + m[1] + " " + (CANDS[m[1]] || "");
-  if (/termos/.test(h.path)) return "Termos e privacidade";
-  return h.title || h.path;
+function nomeOrigem(k){
+  if (!k || k === "direto") return "Acesso direto (WhatsApp, link digitado…)";
+  if (/instagram/.test(k)) return "Instagram";
+  if (/facebook|fb\./.test(k)) return "Facebook";
+  if (/google/.test(k)) return "Google";
+  if (/^t\.co$|twitter|x\.com/.test(k)) return "X (Twitter)";
+  return k;
 }
-function dias(iv, stats){
-  var mapa = {}; (stats || []).forEach(function(s){ mapa[s.day] = s.daily || 0; });
-  var out = [], d = new Date(iv.start.slice(0, 10) + "T12:00:00"), fim = new Date(iv.end.slice(0, 10) + "T12:00:00");
-  while (d <= fim) { var k = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); out.push({ day: k, v: mapa[k] || 0 }); d.setDate(d.getDate()+1); }
+function dias(iv, mapa){
+  var out = [], d = iv.start;
+  while (d <= iv.end) { out.push({ day: d, v: mapa[d] || 0 }); d = somaDias(d, 1); }
   return out;
 }
 function candidatos(){
-  var hits = dados.hits, pre = { enviada: "cola-enviada-", escolheu: "cola-escolheu-", perfil: "perfil-", compartilhou: "compartilhou-" }[modo];
-  var mapa = {}; porPrefixo(hits, pre).forEach(function(h){ mapa[h.path.slice(pre.length)] = h.count; });
-  var lista = Object.keys(CANDS).map(function(n){ return { num: n, nome: CANDS[n], v: mapa[n] || 0 }; }).sort(function(a, b){ return b.v - a.v || a.num.localeCompare(b.num); });
-  barras($("bCand"), lista.map(function(c){ return { num: c.num, nome: c.nome, v: c.v }; }), true);
-  $("tCand").innerHTML = "<tr><th>Nº</th><th>Candidato</th><th class=r>Total</th></tr>" + lista.map(function(c){ return "<tr><td>" + c.num + "</td><td>" + c.nome + "</td><td class=r>" + fmt(c.v) + "</td></tr>"; }).join("");
+  var m = por(de({ enviada: "cola-enviada", escolheu: "cola-escolheu", perfil: "perfil", compartilhou: "compartilhou" }[modo]), "candidato");
+  var lista = Object.keys(CANDS).map(function(n){ return { num: n, nome: CANDS[n], v: m[n] || 0 }; }).sort(function(a, b){ return b.v - a.v || a.num.localeCompare(b.num); });
+  barras($("bCand"), lista, true);
+  $("tCand").innerHTML = "<tr><th>Nº</th><th>Candidato</th><th class=r>Total</th></tr>" + lista.map(function(c){ return "<tr><td>" + c.num + "</td><td>" + esc(c.nome) + "</td><td class=r>" + fmt(c.v) + "</td></tr>"; }).join("");
 }
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 function barras(el, itens, comNum, tinta){
@@ -263,14 +265,17 @@ function linha(el, pts, unidade){
   svg.addEventListener("mouseleave", function(){ tip.style.display = "none"; cx.setAttribute("visibility", "hidden"); cp.setAttribute("visibility", "hidden"); });
 }
 function demo(iv){
-  var nums = Object.keys(CANDS), rnd = function(a){ return Math.floor(Math.random() * a); };
-  var ds = dias(iv, []).map(function(p, i){ return { day: p.day, daily: 40 + rnd(200) + i * 6 }; });
-  var hits = [{ path: "/", title: "Início", event: false, count: 2100 }, { path: "/candidatos/080.html", event: false, count: 140 }, { path: "/termos-e-privacidade.html", event: false, count: 12 },
-    { path: "cola-criada", event: true, count: 412, stats: ds.map(function(s){ return { day: s.day, daily: rnd(40) }; }) },
-    { path: "cola-whatsapp", event: true, count: 260 }, { path: "cola-imagem", event: true, count: 98 }, { path: "cola-copiou-texto", event: true, count: 54 }];
-  [20, 18, 15, 12, 10, 8, 5, 3].forEach(function(n){ hits.push({ path: "cola-tamanho-" + n, event: true, count: rnd(120) + 5 }); });
-  nums.forEach(function(n){ ["cola-enviada-", "cola-escolheu-", "perfil-", "compartilhou-"].forEach(function(p){ hits.push({ path: p + n, event: true, count: rnd(300) }); }); });
-  return { total: { total: 5200, total_events: 2100, stats: ds }, hits: hits, refs: { stats: [{ name: "", count: 1900 }, { name: "l.instagram.com", count: 620 }, { name: "Google", count: 410 }, { name: "lm.facebook.com", count: 220 }] }, iv: iv };
+  var nums = Object.keys(CANDS), rnd = function(a){ return Math.floor(Math.random() * a); }, rows = [];
+  dias(iv, {}).forEach(function(p, i){
+    rows.push({ tipo: "visitante-dia", candidato: "", valor: "novo", dia: p.day, n: 40 + rnd(200) + i * 6 });
+    rows.push({ tipo: "visita", candidato: "", valor: ["direto", "l.instagram.com", "google.com", "lm.facebook.com"][i % 4], dia: p.day, n: 60 + rnd(260) });
+    rows.push({ tipo: "visita", candidato: nums[rnd(nums.length)], valor: "direto", dia: p.day, n: rnd(30) });
+    rows.push({ tipo: "cola-criada", candidato: "", valor: "", dia: p.day, n: rnd(40) });
+    ["whatsapp", "imagem", "copiou-texto"].forEach(function(k){ rows.push({ tipo: "cola-meio", candidato: "", valor: k, dia: p.day, n: rnd(20) }); });
+    [20, 15, 10, 5, 3].forEach(function(n){ rows.push({ tipo: "cola-tamanho", candidato: "", valor: String(n), dia: p.day, n: rnd(10) }); });
+    nums.forEach(function(n){ ["cola-enviada", "cola-escolheu", "perfil", "compartilhou"].forEach(function(t){ rows.push({ tipo: t, candidato: n, valor: "", dia: p.day, n: rnd(12) }); }); });
+  });
+  return { rows: rows, iv: iv };
 }
 function mostrarChave(){ $("pedeChave").style.display = "block"; $("painel").style.display = "none"; }
 function mostrarPainel(){ $("pedeChave").style.display = "none"; $("painel").style.display = "block"; carregar(); }
